@@ -1,0 +1,4 @@
+paul:
+    resource: "@PaulBundle/Controller/"
+    type:     annotation
+    prefix:   /paul/{_locale}/

@@ -1,0 +1,23 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<a href="{{ path('paul_pays_index') }}">{{ 'countriesList'|trans }}</a>
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+
+	<h3>{{ 'athleteList'|trans }} ({{ pays.athletes.count }})</h3>
+
+	<ul>
+		{% for a in pays.athletes %}
+			<li>
+				<a href="{{ path('paul_athlete_edit', {'athleteId': a.id}) }}">
+					<img src="{{ asset("assets/img/drapeaux/#{a.pays.drapeau}") }}" alt="{{ a.prenom }} {{ a.nom }}" />
+					<img src="{{ asset("assets/img/athletes/#{a.photo}") }}" alt="{{ a.prenom }} {{ a.nom }}" style="max-width: 40px; max-height: 40px;" />
+					{{ a.prenom }} {{ a.nom }}
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

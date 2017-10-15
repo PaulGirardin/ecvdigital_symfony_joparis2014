@@ -1,0 +1,18 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<h1>{{ 'countriesList'|trans }}</h1>
+
+	<a href="{{ path('paul_pays_add') }}">{{ 'addCountry'|trans }}</a>
+
+	<ul>
+		{% for p in pays %}
+			<li>
+				<a href="{{ path('paul_pays_edit', {'paysId': p.id}) }}"><img src="{{ asset('assets/img/drapeaux/' ~ p.drapeau) }}"> {{ p.nom }}</a>
+				<a href="{{ path('paul_pays_delete', {'paysId': p.id}) }}" class="btn btn-danger">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

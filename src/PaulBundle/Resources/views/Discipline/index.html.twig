@@ -1,0 +1,18 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<h1>{{ 'sportList'|trans }}</h1>
+
+	<a href="{{ path('paul_discipline_add') }}">{{ 'addSport'|trans }}</a>
+
+	<ul>
+		{% for d in disciplines %}
+			<li>
+				<a href="{{ path('paul_discipline_edit', {'disciplineId': d.id}) }}">{{ d.nom }}</a>
+				<a href="{{ path('paul_discipline_delete', {'disciplineId': d.id}) }}" class="btn btn-danger">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

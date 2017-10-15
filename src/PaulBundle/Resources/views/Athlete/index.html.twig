@@ -1,0 +1,22 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<h1>{{ 'athleteList'|trans }}</h1>
+
+	<a href="{{ path('paul_athlete_add') }}">{{ 'addAthlete'|trans }}</a>
+
+	<ul>
+		{% for a in athletes %}
+			<li>
+				<a href="{{ path('paul_athlete_edit', {'athleteId': a.id}) }}">
+					<img src="{{ asset("assets/img/drapeaux/#{a.pays.drapeau}") }}" alt="{{ a.prenom }} {{ a.nom }}" />
+					<img src="{{ asset("assets/img/athletes/#{a.photo}") }}" alt="{{ a.prenom }} {{ a.nom }}" style="max-width: 40px; max-height: 40px;" />
+					{{ a.prenom }} {{ a.nom }}
+				</a>
+				<a href="{{ path('paul_athlete_delete', {'athleteId': a.id}) }}" class="btn btn-danger">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

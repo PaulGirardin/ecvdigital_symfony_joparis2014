@@ -1,0 +1,9 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<a href="{{ path('paul_discipline_index') }}">{{ 'sportList'|trans }}</a>
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+{% endblock %}
