@@ -1,0 +1,146 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<h1>{{ 'cityList'|trans }}</h1>
+
+	<a href="{{ path('paul_ville_add') }}">{{ 'addCity'|trans }}</a>
+
+	<ul id="villes-list">
+		{% for v in villes %}
+			<li>
+				<p>
+					<span>{{ v.nom }}</span>
+					<button class="btn btn-warning" id="{{ v.id }}">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
+					<a href="{{ path('paul_ville_delete', {'villeId': v.id}) }}" class="btn btn-danger">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</a>
+				</p>
+			</li>
+		{% endfor %}
+	</ul>
+
+	<div id="delete-confirmation" class="modale">
+		<div class="center">
+			<h3>{{ 'confirmDeleteVille'|trans }}</h3>
+
+			<button class="btn btn-success" id="confirm">{{ 'yes'|trans }}</button>
+			<button class="btn btn-danger" id="cancel">{{ 'no'|trans }}</button>
+		</div>
+	</div>
+
+	<div id="ville-edit" class="modale">
+		<div class="center">
+			<h3>{{ 'editCity'|trans }}</h3>
+
+			<form id="edit-form" name="ville">
+				{{ 'name'|trans }} <input name="ville[nom]" type="text">
+
+				<input type="submit" value="{{ 'saveCity'|trans }}">
+			</form>
+
+			<button id="cancel-edit" class="btn btn-secondary">{{ 'cancel'|trans }}</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block customjs %}
+	<script>
+		var url = '';
+
+		function setup () {
+			$('.btn-danger').on('click', function (e) {
+				e.preventDefault();
+				url = this.href;
+
+				$("#delete-confirmation").css("display", "flex");
+			});
+
+			$('#cancel').on('click', function () {
+				$("#delete-confirmation").css("display", "none");
+			});
+
+			$('.btn-warning').on('click', function (e) {
+				url = '{{ path('paul_ville_edit') }}/' + this.id;
+
+				$('#ville-edit input[name$="ville[nom]"]').attr('value', $('#' + this.id).parent().find('span:first').html());
+
+				$('#ville-edit').css("display", "flex");
+			});
+
+			$('#cancel-edit').on('click', function () {
+				$("#ville-edit").css("display", "none");
+			});
+		}
+
+		setup();
+
+		$('#confirm').on('click', function () {
+			$.ajax({
+				url: url,
+				type: 'POST',
+				success: function (result) {
+					alert(result.message.msg);
+					$("#delete-confirmation").css("display", "none");
+
+					var html = '';
+
+					$.each(result.villes, function (ville) {
+						html += '<li><p>';
+							html += '<span>' + this.nom + '</span>';
+							html += '<button class="btn btn-warning" id="' + this.id + '">';
+								html += '<i class="fa fa-pencil" aria-hidden="true"></i>';
+							html += '</button>';
+							html += '<a href="{{ path('paul_ville_delete') }}/' + this.id + '" class="btn btn-danger">';
+								html += '<i class="fa fa-times" aria-hidden="true"></i>';
+							html += '</a>';
+						html += '</p></li>';
+					});
+
+					$('#villes-list').html(html);
+
+					setup();
+				},
+				error: function (result) {
+					alert(result.message.msg);
+				}
+			});
+		});
+
+		$('form').submit(function (e) {
+			e.preventDefault();
+
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: $(this).serialize(),
+				success: function (result) {
+					alert(result.message.msg);
+					$("#ville-edit").css("display", "none");
+
+					var html = '';
+
+					$.each(result.villes, function (ville) {
+						html += '<li><p>';
+							html += this.nom;
+							html += '<button class="btn btn-warning" id="' + this.id + '">';
+								html += '<i class="fa fa-pencil" aria-hidden="true"></i>';
+							html += '</button>';
+							html += '<a href="{{ path('paul_ville_delete') }}/' + this.id + '" class="btn btn-danger">';
+								html += '<i class="fa fa-times" aria-hidden="true"></i>';
+							html += '</a>';
+						html += '</p></li>';
+					});
+
+					$('#villes-list').html(html);
+
+					setup();
+				},
+				error: function (result) {
+					alert(result.message.msg);
+				}
+			});
+		});
+	</script>
+{% endblock %}

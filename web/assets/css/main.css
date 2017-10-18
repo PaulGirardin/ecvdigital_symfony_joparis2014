@@ -1,0 +1,24 @@
+.modale {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	display: none;
+	z-index: 10;
+
+	background-color: rgba(55, 55, 55, 0.3);
+}
+
+.modale .center {
+	max-width: 600px;
+	padding: 50px;
+	margin: auto;
+
+	background-color: white;
+	text-align: center;
+}
+
+.modale .btn {
+	margin: 30px 10px;
+}

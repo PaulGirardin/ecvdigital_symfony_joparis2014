@@ -1,0 +1,30 @@
+{% extends 'PaulBundle::base.html.twig' %}
+
+{% block body %}
+	<a href="{{ path('paul_ville_index') }}">{{ 'cityList'|trans }}</a>
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+{% endblock %}
+
+{% block customjs %}
+	<script>
+		$('form').submit(function (e) {
+			e.preventDefault();
+
+			$.ajax({
+				url: '{{ path("paul_ville_add") }}',
+				type: 'POST',
+				data: $(this).serialize(),
+				success: function (result) {
+					alert(result.msg);
+					window.location.href = "{{ path('paul_ville_index') }}";
+				},
+				error: function (result) {
+					alert(result.msg);
+				}
+			});
+		});
+	</script>
+{% endblock %}
